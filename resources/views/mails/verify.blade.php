@@ -92,12 +92,13 @@
             </p>
 
             <div class="button">
-                <a id="button" href="#">
+                <a id="button" href="http://127.0.0.1:5173/verified/{{ $data['id'] }}/{{ $data['token'] }}">
                     Verify account
                 </a>
             </div>
             <p class="text">If clicking doesn't work, you can try copying and pasting it to your browser:</p>
-            <a id="link" href="#">some link</a>
+            <a id="link"
+                href="http://127.0.0.1:5173/verified/{{ $data['id'] }}/{{ $data['token'] }}">http://127.0.0.1:5173/verified/{{ $data['id'] }}/{{ $data['token'] }}</a>
             <p class="text">If you have any problems, please contact us: support@moviequotes.ge</p>
             <p class="text">MovieQuotes Crew</p>
         </div>
