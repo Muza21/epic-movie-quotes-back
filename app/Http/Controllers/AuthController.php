@@ -11,8 +11,6 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Mail;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Firebase\JWT\JWT;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Redirect;
 
 class AuthController extends Controller
 {

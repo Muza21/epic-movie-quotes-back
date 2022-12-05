@@ -41,7 +41,7 @@ class JwtAuth
                     'HS256'
                 )
             );
-            dd($decoded);
+
             if ($decoded->exp > Carbon::now()->timestamp) {
                 return $next($request);
             }
