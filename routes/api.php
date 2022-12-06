@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GoogleAuthController;
+use App\Http\Controllers\MoviesController;
 use App\Http\Controllers\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,3 +34,5 @@ Route::controller(ResetPasswordController::class)->group(function () {
     Route::post('/forgot-password', 'sendResetLink')->name('password.email');
     Route::post('/reset-password', 'update')->name('password.update');
 });
+
+Route::post('add-movie', [MoviesController::class,'store'])->middleware('jwt.auth')->name('add.movie');
