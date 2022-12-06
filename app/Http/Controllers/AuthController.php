@@ -30,9 +30,7 @@ class AuthController extends Controller
             ];
         }
 
-        Mail::to($user->email)->locale(App::currentLocale())->send(
-            new VerifyMail($data)
-        );
+        Mail::to($user->email)->send(new VerifyMail($data));
         return response()->json(['message' => 'user created successfully'], 201);
     }
 
@@ -72,14 +70,14 @@ class AuthController extends Controller
         return response()->json('success', 200)->withCookie($cookie);
     }
 
-    // public function me(): JsonResponse
-    // {
-    //     return response()->json(
-    //         [
-    //             'message' => 'authenticated successfully',
-    //             'user'    => jwtUser(),
-    //         ],
-    //         200
-    //     );
-    // }
+    public function me(): JsonResponse
+    {
+        return response()->json(
+            [
+                'message' => 'authenticated successfully',
+                'user'    => jwtUser(),
+            ],
+            200
+        );
+    }
 }

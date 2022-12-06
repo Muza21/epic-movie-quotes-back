@@ -15,12 +15,21 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::post('/signup', [AuthController::class,'register'])->name('signup');
-Route::post('/login', [AuthController::class,'login'])->name('login');
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('jwt.auth')->name('logout');
-Route::get('/me', [AuthController::class, 'me'])->middleware('jwt.auth')->name('me');
+Route::controller(AuthController::class)->group(function () {
+    Route::post('/signup', 'register')->name('signup');
+    Route::post('/login', 'login')->name('login');
+    Route::post('/logout', 'logout')->middleware('jwt.auth')->name('logout');
+    Route::get('/me', 'me')->middleware('jwt.auth')->name('me');
+});
 
 Route::post('/email/verify/{id}/{token}', [VerifyEmailController::class, 'verifyEmail'])->name('verification.verify');
-Route::get('/redirect', [GoogleAuthController::class,'googleRedirect'])->name('google.redirect');
-Route::get('/callback', [GoogleAuthController::class,'googleCallback'])->name('google.callback');
+
+Route::controller(GoogleAuthController::class)->group(function () {
+    Route::get('/redirect', 'googleRedirect')->name('google.redirect');
+    Route::get('/callback', 'googleCallback')->name('google.callback');
+});
+
+Route::controller(ResetPasswordController::class)->group(function () {
+    Route::post('/forgot-password', 'sendResetLink')->name('password.email');
+    Route::post('/reset-password', 'update')->name('password.update');
+});
