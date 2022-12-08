@@ -11,12 +11,13 @@ class MoviesController extends Controller
     public function store(MovieStoreRequest $request)
     {
         $validation = $request->validated();
-
+        // dd();
         Movie::create([
             'title'        => $validation['movie_name_en'],
             'director'     => $validation['director_name_en'],
             'description'  => $validation['movie_description_en'],
-            // 'thumbnail'    => $validation['movie_picture'],
+            // 'thumbnail'    => request()->file('movie_picture')->store('thumbnail'),
+            'thumbnail'    => $validation['movie_picture']->store('thumbnail'),
         ]);
 
         return response()->json(['message' => 'movie stored successfully'], 200);

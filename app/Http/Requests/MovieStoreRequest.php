@@ -20,7 +20,8 @@ class MovieStoreRequest extends FormRequest
             'director_name_ka' =>'required',
             'movie_description_en' => 'required',
             'movie_description_ka' => 'required',
-            // 'movie_picture' => 'required',
+            // 'movie_picture' => '',
+            'movie_picture' => 'required|image',
         ];
     }
 }
