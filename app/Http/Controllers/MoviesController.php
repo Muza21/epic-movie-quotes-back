@@ -13,8 +13,6 @@ class MoviesController extends Controller
     {
         $validation = $request->validated();
 
-        // dd($validation['genre']);
-
         Movie::create([
             'title'        => $validation['movie_name_en'],
             'director'     => $validation['director_name_en'],
