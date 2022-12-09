@@ -36,7 +36,8 @@ Route::controller(ResetPasswordController::class)->group(function () {
     Route::post('/reset-password', 'update')->name('password.update');
 });
 
-Route::post('add-movie', [MoviesController::class,'store'])->middleware('jwt.auth')->name('add.movie');
-
-Route::get('movielist', [MoviesController::class,'movies'])->middleware('jwt.auth')->name('movie.list');
-Route::get('genres', [GenreController::class,'genres'])->middleware('jwt.auth')->name('genre.list');
+Route::post('/add-movie', [MoviesController::class,'store'])->middleware('jwt.auth')->name('add.movie');
+Route::post('/delete-movie/{movie}', [MoviesController::class,'destroy'])->middleware('jwt.auth')->name('delete.movie');
+Route::get('/movielist', [MoviesController::class,'movies'])->middleware('jwt.auth')->name('movie.list');
+Route::get('/movie-description/{movie}', [MoviesController::class,'loadMovie'])->middleware('jwt.auth')->name('load.movie');
+Route::get('/genres', [GenreController::class,'genres'])->middleware('jwt.auth')->name('genre.list');

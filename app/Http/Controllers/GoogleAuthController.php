@@ -39,7 +39,6 @@ class GoogleAuthController extends Controller
                     'username' => $googleUser->name,
                     'email' => $googleUser->email,
                     'password' => encrypt('12345678'),
-                    'session_token' => Str::random(50),
                 ]);
                 $payload = [
                     'exp' => Carbon::now()->addMinute(30)->timestamp,

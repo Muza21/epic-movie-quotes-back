@@ -26,10 +26,22 @@ class MoviesController extends Controller
         return response()->json(['message' => 'movie stored successfully'], 200);
     }
 
+    public function destroy(Movie $movie): JsonResponse
+    {
+        $movie->delete();
+
+        return response()->json(['message' => 'movie deleted successfully'], 200);
+    }
+
     public function movies()
     {
         $data = ['movies'=>Movie::all(),];
 
         return response()->json($data);
+    }
+
+    public function loadMovie(Movie $movie)
+    {
+        return response()->json($movie);
     }
 }

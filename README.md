@@ -5,7 +5,6 @@
 -   [Tech Stack](#tech-stack)
 -   [Getting started](#getting-started)
 -   [Development](#development)
--   [Deployment](#deployment)
 -   [Resources](#resources)
 
 ## Introduction
