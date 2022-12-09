@@ -26,7 +26,7 @@ class GoogleAuthController extends Controller
 
             if ($searchUser) {
                 $payload = [
-                    'exp' => Carbon::now()->addSeconds(30)->timestamp,
+                    'exp' => Carbon::now()->addMinute(30)->timestamp,
                     'uid' => $searchUser->id,
                 ];
 
@@ -42,7 +42,7 @@ class GoogleAuthController extends Controller
                     'session_token' => Str::random(50),
                 ]);
                 $payload = [
-                    'exp' => Carbon::now()->addSeconds(30)->timestamp,
+                    'exp' => Carbon::now()->addMinute(30)->timestamp,
                     'uid' => $user->id,
                 ];
 

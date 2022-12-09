@@ -17,6 +17,10 @@ return new class () extends Migration {
             $table->string('title');
             $table->string('director');
             $table->text('description');
+            $table->json('genre');
+            $table->unsignedInteger('year');
+            $table->unsignedBigInteger('budget');
+            $table->unsignedMediumInteger('quotes_number')->default(0);
             $table->string('thumbnail')->nullable();
             $table->timestamps();
         });

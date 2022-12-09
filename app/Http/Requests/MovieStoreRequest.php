@@ -14,13 +14,15 @@ class MovieStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'movie_name_en' => 'required',
+            'movie_name_en' => 'required|alpha',
             'movie_name_ka' => 'required',
-            'director_name_en' =>'required',
+            'director_name_en' =>'required|alpha',
             'director_name_ka' =>'required',
+            'genre' => 'required',
+            'year' =>'required|integer',
+            'budget' =>'required|integer',
             'movie_description_en' => 'required',
             'movie_description_ka' => 'required',
-            // 'movie_picture' => '',
             'movie_picture' => 'required|image',
         ];
     }

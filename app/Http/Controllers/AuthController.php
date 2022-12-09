@@ -53,7 +53,7 @@ class AuthController extends Controller
 
 
         $payload = [
-            'exp' => Carbon::now()->addSeconds(30)->timestamp,
+            'exp' => Carbon::now()->addMinute(30)->timestamp,
             'uid' => User::where($getEmailOrUsername, '=', $validation['username'])->first()->id,
         ];
 
