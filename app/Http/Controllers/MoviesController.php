@@ -25,4 +25,11 @@ class MoviesController extends Controller
 
         return response()->json(['message' => 'movie stored successfully'], 200);
     }
+
+    public function movies()
+    {
+        $data = ['movies'=>Movie::all(),];
+
+        return response()->json($data);
+    }
 }

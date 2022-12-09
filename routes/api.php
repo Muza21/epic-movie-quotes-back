@@ -38,4 +38,5 @@ Route::controller(ResetPasswordController::class)->group(function () {
 
 Route::post('add-movie', [MoviesController::class,'store'])->middleware('jwt.auth')->name('add.movie');
 
+Route::get('movielist', [MoviesController::class,'movies'])->middleware('jwt.auth')->name('movie.list');
 Route::get('genres', [GenreController::class,'genres'])->middleware('jwt.auth')->name('genre.list');
