@@ -48,3 +48,4 @@ Route::controller(MoviesController::class)->group(function () {
 Route::get('/genres', [GenreController::class,'genres'])->middleware('jwt.auth')->name('genre.list');
 
 Route::post('/add-quote', [QuotesController::class,'store'])->middleware('jwt.auth')->name('add.quote');
+Route::get('/quotes', [QuotesController::class,'quotes'])->middleware('jwt.auth')->name('quotes.list');

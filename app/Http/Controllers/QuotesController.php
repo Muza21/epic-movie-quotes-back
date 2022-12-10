@@ -23,6 +23,13 @@ class QuotesController extends Controller
         return response()->json(['message' => 'quote stored successfully'], 200);
     }
 
+    public function quotes()
+    {
+        $data = ['quotes'=>Quote::all(),];
+
+        return response()->json($data);
+    }
+
     // public function update(QuoteUpdateRequest $request, Quote $quote): JsonResponse
     // {
     //     $validation = $request->validated();
