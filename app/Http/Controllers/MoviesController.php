@@ -32,10 +32,10 @@ class MoviesController extends Controller
     {
         $validation = $request->validated();
 
-        if (isset($validation['thumbnail'])) {
-            File::delete('storage/' . $movie->thumbnail);
-            $validation['thumbnail'] = $validation['thumbnail']->store('thumbnails');
+        if (isset($validation['movie_picture'])) {
+            File::delete('storage/'.($movie->thumbnail));
         }
+
         $movie->update([
             'title'        => $validation['movie_name_en'],
             'director'     => $validation['director_name_en'],
