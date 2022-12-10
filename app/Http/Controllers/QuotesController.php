@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\QuoteStoreRequest;
+use App\Models\Movie;
 use App\Models\Quote;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,12 +15,8 @@ class QuotesController extends Controller
         $validation = $request->validated();
 
         Quote::create([
-            // 'quote'        => [
-            //     'en' => $validation['quote_en'],
-            //     'ka' => $validation['quote_ka'],
-            // ],
-            'quote'        => $validation['quote_en'],
-            'movie_id'    => 2,
+            'quote'       => $validation['quote_en'],
+            'movie_id'    => Movie::where('title', '=', $validation['movie_title'])->first()->id,
             'thumbnail'   => $validation['quote_picture']->store('thumbnails'),
         ]);
 
