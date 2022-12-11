@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\QuoteStoreRequest;
+use App\Http\Requests\QuoteUpdateRequest;
 use App\Models\Movie;
 use App\Models\Quote;
 use Illuminate\Http\JsonResponse;
@@ -17,11 +18,28 @@ class QuotesController extends Controller
         Quote::create([
             'quote'       => $validation['quote_en'],
             'movie_id'    => $movie->id,
-            'thumbnail'   => $validation['quote_picture']->store('thumbnails'),
+            'thumbnail'   => $validation['quote_picture']->store('quote_thumbnails'),
         ]);
         $movie->quotes_number = $movie->quotes_number + 1;
         $movie->save();
         return response()->json(['message' => 'quote stored successfully'], 200);
+    }
+
+    public function update(QuoteUpdateRequest $request, Quote $quote): JsonResponse
+    {
+        $validation = $request->validated();
+
+        if (isset($validation['quote_picture'])) {
+            File::delete('storage/'.($quote->thumbnail));
+        }
+        $movie = Movie::where('title', '=', $validation['movie_title'])->first();
+        $quote->update([
+            'quote'       => $validation['quote_en'],
+            'movie_id'    => $movie->id,
+            'thumbnail'    => is_string($validation['quote_picture']) ? $quote->thumbnail : $validation['quote_picture']->store('quote_thumbnails'),
+        ]);
+
+        return response()->json(['message' => 'quote updated successfully'], 200);
     }
 
     public function destroy(Quote $quote): JsonResponse
@@ -42,25 +60,13 @@ class QuotesController extends Controller
         return response()->json($data);
     }
 
-    // public function update(QuoteUpdateRequest $request, Quote $quote): JsonResponse
-    // {
-    //     $validation = $request->validated();
-
-    //     if (!isset($validation['thumbnail'])) {
-    //         $validation['thumbnail'] = $quote->thumbnail;
-    //     } else {
-    //         File::delete('storage/' . $quote->thumbnail);
-    //         $validation['thumbnail'] = request()->file('thumbnail')->store('thumbnails');
-    //     }
-    //     $quote->update([
-    //         'quote'        => [
-    //             'en' => $validation['quote_en'],
-    //             'ka' => $validation['quote_ka'],
-    //         ],
-    //         'movie_id'    => $validation['movie_id'],
-    //         'thumbnail'   => $validation['thumbnail'],
-    //     ]);
-
-    //     return response()->json(['message' => 'quote updated successfully'], 200);
-    // }
+    public function loadQuote(Quote $quote)
+    {
+        $movie = Movie::where('id', '=', $quote->movie_id)->first();
+        $data = [
+            'movie' => $movie,
+            'quote' => $quote,
+        ];
+        return response()->json($data);
+    }
 }

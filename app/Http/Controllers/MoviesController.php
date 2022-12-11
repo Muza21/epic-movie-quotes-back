@@ -22,7 +22,7 @@ class MoviesController extends Controller
             'year'         => $validation['year'],
             'budget'       => $validation['budget'],
             'description'  => $validation['movie_description_en'],
-            'thumbnail'    => $validation['movie_picture']->store('thumbnail'),
+            'thumbnail'    => $validation['movie_picture']->store('movie_thumbnails'),
         ]);
 
         return response()->json(['message' => 'movie stored successfully'], 200);
@@ -43,7 +43,7 @@ class MoviesController extends Controller
             'year'         => $validation['year'],
             'budget'       => $validation['budget'],
             'description'  => $validation['movie_description_en'],
-            'thumbnail'    => is_string($validation['movie_picture']) ? $movie->thumbnail : $validation['movie_picture']->store('thumbnail'),
+            'thumbnail'    => is_string($validation['movie_picture']) ? $movie->thumbnail : $validation['movie_picture']->store('movie_thumbnails'),
         ]);
 
         return response()->json(['message' => 'movie updated successfully'], 200);
