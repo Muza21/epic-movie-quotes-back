@@ -7,7 +7,6 @@ use App\Http\Requests\MovieUpdateRequest;
 use App\Models\Movie;
 use App\Models\Quote;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
 class MoviesController extends Controller

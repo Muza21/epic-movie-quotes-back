@@ -47,5 +47,12 @@ Route::controller(MoviesController::class)->group(function () {
 
 Route::get('/genres', [GenreController::class,'genres'])->middleware('jwt.auth')->name('genre.list');
 
-Route::post('/add-quote', [QuotesController::class,'store'])->middleware('jwt.auth')->name('add.quote');
-Route::get('/quotes', [QuotesController::class,'quotes'])->middleware('jwt.auth')->name('quotes.list');
+Route::controller(QuotesController::class)->group(function () {
+    Route::post('/add-quote', 'store')->middleware('jwt.auth')->name('add.quote');
+    Route::get('/quotes', 'quotes')->middleware('jwt.auth')->name('quotes.list');
+    Route::post('/delete-quote/{quote}', 'destroy')->middleware('jwt.auth')->name('delete.quote');
+});
+
+// Route::post('/add-quote', [QuotesController::class,'store'])->middleware('jwt.auth')->name('add.quote');
+//     Route::get('/quotes', [QuotesController::class,'quotes'])->middleware('jwt.auth')->name('quotes.list');
+//     Route::post('/delete-quote/{quote}', [QuotesController::class,'destroy'])->middleware('jwt.auth')->name('delete.quote');

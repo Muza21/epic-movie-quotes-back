@@ -6,21 +6,33 @@ use App\Http\Requests\QuoteStoreRequest;
 use App\Models\Movie;
 use App\Models\Quote;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class QuotesController extends Controller
 {
     public function store(QuoteStoreRequest $request): JsonResponse
     {
         $validation = $request->validated();
-
+        $movie = Movie::where('title', '=', $validation['movie_title'])->first();
         Quote::create([
             'quote'       => $validation['quote_en'],
-            'movie_id'    => Movie::where('title', '=', $validation['movie_title'])->first()->id,
+            'movie_id'    => $movie->id,
             'thumbnail'   => $validation['quote_picture']->store('thumbnails'),
         ]);
-
+        $movie->quotes_number = $movie->quotes_number + 1;
+        $movie->save();
         return response()->json(['message' => 'quote stored successfully'], 200);
+    }
+
+    public function destroy(Quote $quote): JsonResponse
+    {
+        File::delete('storage/' . $quote->thumbnail);
+        $quote->delete();
+        $movie = Movie::where('id', '=', $quote->movie_id)->first();
+        $movie->quotes_number = $movie->quotes_number - 1;
+        $movie->save();
+
+        return response()->json(['message' => 'quote deleted successfully'], 200);
     }
 
     public function quotes()
@@ -50,11 +62,5 @@ class QuotesController extends Controller
     //     ]);
 
     //     return response()->json(['message' => 'quote updated successfully'], 200);
-    // }
-
-    // public function destroy(Quote $quote): JsonResponse
-    // {
-    //     $quote->delete();
-    //     return response()->json(['message' => 'quote deleted successfully'], 200);
     // }
 }
