@@ -72,7 +72,7 @@ class AuthController extends Controller
         return response()->json('success', 200)->withCookie($cookie);
     }
 
-    public function me(): JsonResponse
+    public function checkAuthentication(): JsonResponse
     {
         return response()->json(
             [
@@ -83,7 +83,7 @@ class AuthController extends Controller
         );
     }
 
-    public function user(): JsonResponse
+    public function currentUserData(): JsonResponse
     {
         $data = [
             'user'  => jwtUser(),
