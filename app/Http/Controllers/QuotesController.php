@@ -14,7 +14,7 @@ class QuotesController extends Controller
 {
     public function index()
     {
-        $data = ['quotes'=>Quote::all()->load('user')];
+        $data = ['quotes'=>Quote::all()->load('user', 'comments.user')];
 
         return response()->json($data);
     }
@@ -30,8 +30,9 @@ class QuotesController extends Controller
         ];
         $data = [
             'movie' => $movie,
-            'quote' => $quote,
+            'quote' => $quote->load('comments.user'),
             'user'  => $user,
+            'currentUser' => jwtUser(),
         ];
         return response()->json($data);
     }

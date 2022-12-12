@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\MoviesController;
@@ -55,3 +56,5 @@ Route::controller(QuotesController::class)->group(function () {
     Route::patch('/quote/{quote}', 'update')->middleware('jwt.auth')->name('edit.quote');
     Route::post('/quote/{quote}', 'destroy')->middleware('jwt.auth')->name('delete.quote');
 });
+
+Route::post('/comment/{quote}', [CommentController::class, 'post'])->name('post.comment');
