@@ -6,6 +6,7 @@ use App\Http\Requests\MovieStoreRequest;
 use App\Http\Requests\MovieUpdateRequest;
 use App\Models\Movie;
 use App\Models\Quote;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\File;
 
@@ -32,10 +33,9 @@ class MoviesController extends Controller
     {
         $validation = $request->validated();
 
-        if (isset($validation['movie_picture'])) {
+        if (!is_string($validation['movie_picture'])) {
             File::delete('storage/'.($movie->thumbnail));
         }
-
         $movie->update([
             'title'        => $validation['movie_name_en'],
             'director'     => $validation['director_name_en'],
@@ -59,7 +59,10 @@ class MoviesController extends Controller
 
     public function movies()
     {
-        $data = ['movies'=>Movie::all(),];
+        $data = [
+            'movies' => Movie::all(),
+            'user'   => jwtUser(),
+        ];
 
         return response()->json($data);
     }
@@ -67,9 +70,11 @@ class MoviesController extends Controller
     public function loadMovie(Movie $movie)
     {
         $quotes = Quote::where('movie_id', '=', $movie->id)->get();
+
         $data = [
             'movie' => $movie,
             'quotes' => $quotes,
+            'user' => jwtUser(),
         ];
         return response()->json($data);
     }

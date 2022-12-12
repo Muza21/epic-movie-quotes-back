@@ -23,6 +23,7 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/login', 'login')->name('login');
     Route::post('/logout', 'logout')->middleware('jwt.auth')->name('logout');
     Route::get('/me', 'me')->middleware('jwt.auth')->name('me');
+    Route::get('/user', 'user')->middleware('jwt.auth')->name('user');
 });
 
 Route::post('/email/verify/{id}/{token}', [VerifyEmailController::class, 'verifyEmail'])->name('verification.verify');

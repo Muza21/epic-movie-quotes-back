@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Mail;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 
 class AuthController extends Controller
 {
@@ -18,15 +19,16 @@ class AuthController extends Controller
     {
         $validated = $request->validated();
         $user = User::create([
-            'username' => $validated['username'],
-            'email'    => $validated['email'],
-            'password' => bcrypt($validated['password']),
+            'username'  => $validated['username'],
+            'email'     => $validated['email'],
+            'password'  => bcrypt($validated['password']),
+            'thumbnail' => config('auth.back_end_image_link') . "assets/Default_Profile_Picture.jpg"
         ]);
         if ($user != null) {
             $data = [
-                'username'     => $user->username,
-                'id'           => $user->id,
-                'token'        => sha1($user->email),
+                'username' => $user->username,
+                'id'       => $user->id,
+                'token'    => sha1($user->email),
             ];
         }
 
@@ -79,5 +81,13 @@ class AuthController extends Controller
             ],
             200
         );
+    }
+
+    public function user(): JsonResponse
+    {
+        $data = [
+            'user'  => jwtUser(),
+        ];
+        return response()->json($data);
     }
 }

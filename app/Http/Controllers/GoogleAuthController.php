@@ -36,9 +36,10 @@ class GoogleAuthController extends Controller
                 return response()->json('success', 200)->withCookie($cookie);
             } else {
                 $user = User::create([
-                    'username' => $googleUser->name,
-                    'email' => $googleUser->email,
-                    'password' => encrypt('12345678'),
+                    'username'  => $googleUser->name,
+                    'email'     => $googleUser->email,
+                    'password'  => encrypt('12345678'),
+                    'thumbnail' => $googleUser->avatar,
                 ]);
                 $payload = [
                     'exp' => Carbon::now()->addMinute(30)->timestamp,

@@ -6,6 +6,7 @@ use App\Http\Requests\QuoteStoreRequest;
 use App\Http\Requests\QuoteUpdateRequest;
 use App\Models\Movie;
 use App\Models\Quote;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\File;
 
@@ -19,6 +20,7 @@ class QuotesController extends Controller
             'quote'       => $validation['quote_en'],
             'movie_id'    => $movie->id,
             'thumbnail'   => $validation['quote_picture']->store('quote_thumbnails'),
+            'user_id'     => $validation['user_id']
         ]);
         $movie->quotes_number = $movie->quotes_number + 1;
         $movie->save();
@@ -37,6 +39,7 @@ class QuotesController extends Controller
             'quote'       => $validation['quote_en'],
             'movie_id'    => $movie->id,
             'thumbnail'    => is_string($validation['quote_picture']) ? $quote->thumbnail : $validation['quote_picture']->store('quote_thumbnails'),
+            'user_id'     => $validation['user_id']
         ]);
 
         return response()->json(['message' => 'quote updated successfully'], 200);
@@ -55,7 +58,7 @@ class QuotesController extends Controller
 
     public function quotes()
     {
-        $data = ['quotes'=>Quote::all(),];
+        $data = ['quotes'=>Quote::all()->load('user')];
 
         return response()->json($data);
     }
@@ -63,9 +66,16 @@ class QuotesController extends Controller
     public function loadQuote(Quote $quote)
     {
         $movie = Movie::where('id', '=', $quote->movie_id)->first();
+        $collectUser = User::where('id', '=', $quote->user_id)->first();
+        $user = [
+            'id'        => $collectUser->id,
+            'username'  => $collectUser->username,
+            'thumbnail' => $collectUser->thumbnail,
+        ];
         $data = [
             'movie' => $movie,
             'quote' => $quote,
+            'user'  => $user,
         ];
         return response()->json($data);
     }
