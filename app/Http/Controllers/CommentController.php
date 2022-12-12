@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PostCommentRequest;
-use App\Models\Comment;
 use App\Models\Quote;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class CommentController extends Controller
 {
-    public function post(PostCommentRequest $request, Quote $quote)
+    public function post(PostCommentRequest $request, Quote $quote): JsonResponse
     {
         $validation = $request->validated();
         $comment = $quote->comments()->create([

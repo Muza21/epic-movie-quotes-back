@@ -27,4 +27,14 @@ class Quote extends Model
     {
         return $this->hasMany(Comment::class);
     }
+
+    public function likes(): HasMany
+    {
+        return $this->hasMany(Reaction::class);
+    }
+
+    public function isAuthUserLikedQuote()
+    {
+        return $this->likes()->where('user_id', jwtUser()->id)->exists();
+    }
 }
