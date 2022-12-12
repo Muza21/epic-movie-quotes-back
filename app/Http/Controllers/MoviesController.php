@@ -12,6 +12,28 @@ use Illuminate\Support\Facades\File;
 
 class MoviesController extends Controller
 {
+    public function index()
+    {
+        $data = [
+            'movies' => Movie::all(),
+            'user'   => jwtUser(),
+        ];
+
+        return response()->json($data);
+    }
+
+    public function show(Movie $movie)
+    {
+        $quotes = Quote::where('movie_id', '=', $movie->id)->get();
+
+        $data = [
+            'movie' => $movie,
+            'quotes' => $quotes,
+            'user' => jwtUser(),
+        ];
+        return response()->json($data);
+    }
+
     public function store(MovieStoreRequest $request): JsonResponse
     {
         $validation = $request->validated();
@@ -55,27 +77,5 @@ class MoviesController extends Controller
         $movie->delete();
 
         return response()->json(['message' => 'movie deleted successfully'], 200);
-    }
-
-    public function movies()
-    {
-        $data = [
-            'movies' => Movie::all(),
-            'user'   => jwtUser(),
-        ];
-
-        return response()->json($data);
-    }
-
-    public function loadMovie(Movie $movie)
-    {
-        $quotes = Quote::where('movie_id', '=', $movie->id)->get();
-
-        $data = [
-            'movie' => $movie,
-            'quotes' => $quotes,
-            'user' => jwtUser(),
-        ];
-        return response()->json($data);
     }
 }

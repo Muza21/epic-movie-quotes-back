@@ -12,6 +12,30 @@ use Illuminate\Support\Facades\File;
 
 class QuotesController extends Controller
 {
+    public function index()
+    {
+        $data = ['quotes'=>Quote::all()->load('user')];
+
+        return response()->json($data);
+    }
+
+    public function show(Quote $quote)
+    {
+        $movie = Movie::where('id', '=', $quote->movie_id)->first();
+        $collectUser = User::where('id', '=', $quote->user_id)->first();
+        $user = [
+            'id'        => $collectUser->id,
+            'username'  => $collectUser->username,
+            'thumbnail' => $collectUser->thumbnail,
+        ];
+        $data = [
+            'movie' => $movie,
+            'quote' => $quote,
+            'user'  => $user,
+        ];
+        return response()->json($data);
+    }
+
     public function store(QuoteStoreRequest $request): JsonResponse
     {
         $validation = $request->validated();
@@ -54,29 +78,5 @@ class QuotesController extends Controller
         $movie->save();
 
         return response()->json(['message' => 'quote deleted successfully'], 200);
-    }
-
-    public function quotes()
-    {
-        $data = ['quotes'=>Quote::all()->load('user')];
-
-        return response()->json($data);
-    }
-
-    public function loadQuote(Quote $quote)
-    {
-        $movie = Movie::where('id', '=', $quote->movie_id)->first();
-        $collectUser = User::where('id', '=', $quote->user_id)->first();
-        $user = [
-            'id'        => $collectUser->id,
-            'username'  => $collectUser->username,
-            'thumbnail' => $collectUser->thumbnail,
-        ];
-        $data = [
-            'movie' => $movie,
-            'quote' => $quote,
-            'user'  => $user,
-        ];
-        return response()->json($data);
     }
 }
