@@ -7,6 +7,7 @@ use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\MoviesController;
 use App\Http\Controllers\QuotesController;
 use App\Http\Controllers\ReactionController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
@@ -60,3 +61,4 @@ Route::controller(QuotesController::class)->group(function () {
 
 Route::post('/comment/{quote}', [CommentController::class, 'post'])->middleware('jwt.auth')->name('post.comment');
 Route::post('/reaction/{quote}', [ReactionController::class, 'like'])->middleware('jwt.auth')->name('like.quote');
+Route::post('/search', [SearchController::class, 'searchMovieList'])->middleware('jwt.auth')->name('search.movielist');
