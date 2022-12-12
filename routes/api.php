@@ -49,9 +49,9 @@ Route::controller(MoviesController::class)->group(function () {
 Route::get('/genres', [GenreController::class,'genres'])->middleware('jwt.auth')->name('genre.list');
 
 Route::controller(QuotesController::class)->group(function () {
+    Route::get('/quote', 'index')->middleware('jwt.auth')->name('quotes.list');
+    Route::get('/quote/{quote}', 'show')->middleware('jwt.auth')->name('load.quote');
     Route::post('/quote', 'store')->middleware('jwt.auth')->name('add.quote');
     Route::patch('/quote/{quote}', 'update')->middleware('jwt.auth')->name('edit.quote');
     Route::post('/quote/{quote}', 'destroy')->middleware('jwt.auth')->name('delete.quote');
-    Route::get('/quote', 'index')->middleware('jwt.auth')->name('quotes.list');
-    Route::get('/quote/{quote}', 'show')->middleware('jwt.auth')->name('load.quote');
 });
