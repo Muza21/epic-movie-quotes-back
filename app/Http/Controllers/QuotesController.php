@@ -31,7 +31,7 @@ class QuotesController extends Controller
     {
         $validation = $request->validated();
 
-        if (isset($validation['quote_picture'])) {
+        if (!is_string($validation['quote_picture'])) {
             File::delete('storage/'.($quote->thumbnail));
         }
         $movie = Movie::where('title', '=', $validation['movie_title'])->first();
