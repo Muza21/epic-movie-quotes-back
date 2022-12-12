@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\MoviesController;
+use App\Http\Controllers\QuotesController;
 use App\Http\Controllers\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,7 +22,8 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/signup', 'register')->name('signup');
     Route::post('/login', 'login')->name('login');
     Route::post('/logout', 'logout')->middleware('jwt.auth')->name('logout');
-    Route::get('/me', 'me')->middleware('jwt.auth')->name('me');
+    Route::get('/check-user', 'checkAuthentication')->middleware('jwt.auth')->name('check.user');
+    Route::get('/current-user', 'currentUserData')->middleware('jwt.auth')->name('current.user');
 });
 
 Route::post('/email/verify/{id}/{token}', [VerifyEmailController::class, 'verifyEmail'])->name('verification.verify');
@@ -36,6 +38,20 @@ Route::controller(ResetPasswordController::class)->group(function () {
     Route::post('/reset-password', 'update')->name('password.update');
 });
 
-Route::post('add-movie', [MoviesController::class,'store'])->middleware('jwt.auth')->name('add.movie');
+Route::controller(MoviesController::class)->group(function () {
+    Route::get('/movie', 'index')->middleware('jwt.auth')->name('movie.list');
+    Route::get('/movie/{movie}', 'show')->middleware('jwt.auth')->name('load.movie');
+    Route::post('/movie', 'store')->middleware('jwt.auth')->name('add.movie');
+    Route::patch('/movie/{movie}', 'update')->middleware('jwt.auth')->name('add.movie');
+    Route::post('/movie/{movie}', 'destroy')->middleware('jwt.auth')->name('delete.movie');
+});
 
-Route::get('genres', [GenreController::class,'genres'])->middleware('jwt.auth')->name('genre.list');
+Route::get('/genres', [GenreController::class,'genres'])->middleware('jwt.auth')->name('genre.list');
+
+Route::controller(QuotesController::class)->group(function () {
+    Route::get('/quote', 'index')->middleware('jwt.auth')->name('quotes.list');
+    Route::get('/quote/{quote}', 'show')->middleware('jwt.auth')->name('load.quote');
+    Route::post('/quote', 'store')->middleware('jwt.auth')->name('add.quote');
+    Route::patch('/quote/{quote}', 'update')->middleware('jwt.auth')->name('edit.quote');
+    Route::post('/quote/{quote}', 'destroy')->middleware('jwt.auth')->name('delete.quote');
+});

@@ -110,4 +110,5 @@ return [
 
     'jwt_secret' => env('JWT_SECRET'),
     'front_end_top_level_domain'=> env('FRONT_URL'),
+    'back_end_image_link'=> env('BACK_URL'),
 ];
