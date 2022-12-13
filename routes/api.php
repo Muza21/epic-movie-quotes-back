@@ -1,10 +1,13 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\MoviesController;
 use App\Http\Controllers\QuotesController;
+use App\Http\Controllers\ReactionController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
@@ -55,3 +58,8 @@ Route::controller(QuotesController::class)->group(function () {
     Route::patch('/quote/{quote}', 'update')->middleware('jwt.auth')->name('edit.quote');
     Route::post('/quote/{quote}', 'destroy')->middleware('jwt.auth')->name('delete.quote');
 });
+
+Route::post('/comment/{quote}', [CommentController::class, 'post'])->middleware('jwt.auth')->name('post.comment');
+Route::post('/reaction/{quote}', [ReactionController::class, 'like'])->middleware('jwt.auth')->name('like.quote');
+Route::post('/search', [SearchController::class, 'searchMovieList'])->middleware('jwt.auth')->name('search.movielist');
+Route::post('/search-newsfeed', [SearchController::class, 'searchNewsfeed'])->middleware('jwt.auth')->name('search.newsfeed');

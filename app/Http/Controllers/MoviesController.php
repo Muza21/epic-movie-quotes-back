@@ -28,7 +28,7 @@ class MoviesController extends Controller
 
         $data = [
             'movie' => $movie,
-            'quotes' => $quotes,
+            'quotes' => $quotes->load('comments', 'likes'),
             'user' => jwtUser(),
         ];
         return response()->json($data);
