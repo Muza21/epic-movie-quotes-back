@@ -14,7 +14,7 @@ class NewsfeedSearchRequest extends FormRequest
     public function rules()
     {
         return [
-            'text' => '',
+            'text' => 'required',
         ];
     }
 }
