@@ -62,3 +62,4 @@ Route::controller(QuotesController::class)->group(function () {
 Route::post('/comment/{quote}', [CommentController::class, 'post'])->middleware('jwt.auth')->name('post.comment');
 Route::post('/reaction/{quote}', [ReactionController::class, 'like'])->middleware('jwt.auth')->name('like.quote');
 Route::post('/search', [SearchController::class, 'searchMovieList'])->middleware('jwt.auth')->name('search.movielist');
+Route::post('/search-newsfeed', [SearchController::class, 'searchNewsfeed'])->middleware('jwt.auth')->name('search.newsfeed');

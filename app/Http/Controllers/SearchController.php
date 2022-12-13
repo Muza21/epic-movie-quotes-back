@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\MovielistSearchRequest;
+use App\Http\Requests\NewsfeedSearchRequest;
 use App\Models\Movie;
+use App\Models\Quote;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Arr;
 
 class SearchController extends Controller
 {
@@ -15,7 +19,27 @@ class SearchController extends Controller
 
         $movie = Movie::latest()
         ->where('title', 'like', '%' . $validation['text'] . '%')->get();
-        // ->orwhere('name->ka', 'like', '%' . request('search') . '%')
         return response()->json($movie);
+    }
+
+    public function searchNewsfeed(NewsfeedSearchRequest $request): JsonResponse
+    {
+        $validation = $request->validated();
+        if (Str::startsWith($validation['text'], '@')) {
+            $movie = Movie::latest()
+            ->where('title', 'like', '%' . Str::after($validation['text'], '@') . '%')->get();
+            $movie->load('quotes.user', 'quotes.comments.user', 'quotes.likes');
+            $quote = $movie->pluck('quotes');
+            $quotes = Arr::collapse($quote);
+            return response()->json($quotes);
+        } elseif (Str::startsWith($validation['text'], '#')) {
+            $quotes = Quote::latest()
+            ->where('quote', 'like', '%' . Str::after($validation['text'], '#') . '%')->get();
+            return response()->json($quotes->load('user', 'comments.user', 'likes'));
+        } else {
+            $quotes = Quote::latest()
+            ->where('quote', 'like', '%' . $validation['text'] . '%')->get();
+            return response()->json($quotes->load('user', 'comments.user', 'likes'));
+        }
     }
 }
