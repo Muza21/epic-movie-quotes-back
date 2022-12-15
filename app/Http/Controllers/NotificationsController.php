@@ -15,7 +15,7 @@ class NotificationsController extends Controller
             ->where('sender_id', '!=', jwtUser()->id)->with('sender')
             ->orderBy('created_at', 'desc')
             ->get(),
-            'undreadNotifications' => Notification::where('user_id', '=', jwtUser()->id)
+            'unreadNotifications' => Notification::where('user_id', '=', jwtUser()->id)
             ->where('sender_id', '!=', jwtUser()->id)->where('seen', '=', 0)
             ->orderBy('created_at', 'desc')
             ->get()
@@ -34,7 +34,8 @@ class NotificationsController extends Controller
             'notifications' => Notification::where('user_id', '=', jwtUser()->id)
             ->where('sender_id', '!=', jwtUser()->id)->with('sender')
             ->orderBy('created_at', 'desc')
-            ->get()
+            ->get(),
+            'unreadNotifications' => [],
         ];
         return response()->json($data);
     }
