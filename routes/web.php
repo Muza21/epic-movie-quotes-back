@@ -16,10 +16,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    UserNotification::dispatch();
     return view('welcome');
 });
 
-Route::get('/test', function () {
-    return view('test');
-});
+// Route::get('/test', function () {
+//     broadcast(new UserNotification());
+// });

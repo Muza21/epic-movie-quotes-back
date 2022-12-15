@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\LikeEvent;
 use App\Http\Requests\ReactionRequest;
 use App\Models\Quote;
 use App\Models\Reaction;
@@ -14,14 +15,24 @@ class ReactionController extends Controller
         $validation = $request->validated();
 
         if (!$quote->isAuthUserLikedQuote()) {
-            $quote->likes()->create([
+            $like = $quote->likes()->create([
                 'user_id'  => $validation['user_id'],
                 'quote_id' => $validation['quote_id'],
             ]);
         } else {
             Reaction::where('user_id', '=', $validation['user_id'])->first()->delete();
         }
+        // if (jwtUser()->id != $validation['user_id']) {
+        //     $notification = Notification::create([
+        //         'type'      => 'comment',
+        //         'user_id'   => $validation['user_id'],
+        //         'sender_id' => jwtUser()->id,
+        //     ]);
+        //     event(new UserNotification($notification));
+        // }
         $likes = Reaction::where('quote_id', '=', $quote->id)->get();
+        event(new LikeEvent($likes));
+
         return response()->json($likes);
     }
 }
