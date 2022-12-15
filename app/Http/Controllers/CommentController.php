@@ -20,13 +20,13 @@ class CommentController extends Controller
             'quote_id' => $validation['quote_id'],
         ]);
         event(new CommentEvent($comment));
-        if (jwtUser()->id != $validation['user_id']) {
+        if (jwtUser()->id != $request->reciver_id) {
             $notification = Notification::create([
                 'type'      => 'comment',
-                'user_id'   => $validation['user_id'],
+                'user_id'   => $request->reciver_id,
                 'sender_id' => jwtUser()->id,
             ]);
-            event(new UserNotification($notification));
+            event(new UserNotification($notification->load('sender')));
         }
         return response()->json($comment->load('user'));
     }

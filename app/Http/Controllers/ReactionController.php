@@ -24,7 +24,7 @@ class ReactionController extends Controller
         }
         // if (jwtUser()->id != $validation['user_id']) {
         //     $notification = Notification::create([
-        //         'type'      => 'comment',
+        //         'type'      => 'like',
         //         'user_id'   => $validation['user_id'],
         //         'sender_id' => jwtUser()->id,
         //     ]);

@@ -14,7 +14,7 @@ class QuotesController extends Controller
 {
     public function index()
     {
-        $data = ['quotes' => Quote::all()->load('user', 'comments.user', 'likes')];
+        $data = ['quotes' => Quote::with('user', 'comments.user', 'likes')->orderBy('created_at', 'desc')->get()];
         return response()->json($data);
     }
 
