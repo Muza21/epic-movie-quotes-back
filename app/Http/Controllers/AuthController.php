@@ -52,16 +52,17 @@ class AuthController extends Controller
         if (!$authenticated) {
             return response()->json('wrong email or password', 401);
         }
+        $minutes = isset($validation['remember']) ? 10000 : 30;
 
 
         $payload = [
-            'exp' => Carbon::now()->addMinute(30)->timestamp,
+            'exp' => Carbon::now()->addMinute($minutes)->timestamp,
             'uid' => User::where($getEmailOrUsername, '=', $validation['username'])->first()->id,
         ];
 
         $jwt = JWT::encode($payload, config('auth.jwt_secret'), 'HS256');
 
-        $cookie = cookie("access_token", $jwt, 30, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
+        $cookie = cookie("access_token", $jwt, $minutes, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
         return response()->json('success', 200)->withCookie($cookie);
     }
 

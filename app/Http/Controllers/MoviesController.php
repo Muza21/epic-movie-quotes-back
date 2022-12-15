@@ -38,17 +38,26 @@ class MoviesController extends Controller
     {
         $validation = $request->validated();
 
-        Movie::create([
-            'title'        => $validation['movie_name_en'],
-            'director'     => $validation['director_name_en'],
+        $movie = Movie::create([
+            'title'        => [
+                'en' => $validation['movie_name_en'],
+                'ka' => $validation['movie_name_ka'],
+            ],
+            'director'        => [
+                'en' => $validation['director_name_en'],
+                'ka' => $validation['director_name_ka'],
+            ],
+            'description'        => [
+                'en' => $validation['movie_description_en'],
+                'ka' => $validation['movie_description_ka'],
+            ],
             'genre'        => $validation['genre'],
             'year'         => $validation['year'],
             'budget'       => $validation['budget'],
-            'description'  => $validation['movie_description_en'],
             'thumbnail'    => $validation['movie_picture']->store('movie_thumbnails'),
         ]);
 
-        return response()->json(['message' => 'movie stored successfully'], 200);
+        return response()->json($movie);
     }
 
     public function update(MovieUpdateRequest $request, Movie $movie): JsonResponse
@@ -59,16 +68,25 @@ class MoviesController extends Controller
             File::delete('storage/'.($movie->thumbnail));
         }
         $movie->update([
-            'title'        => $validation['movie_name_en'],
-            'director'     => $validation['director_name_en'],
+            'title'        => [
+                'en' => $validation['movie_name_en'],
+                'ka' => $validation['movie_name_ka'],
+            ],
+            'director'        => [
+                'en' => $validation['director_name_en'],
+                'ka' => $validation['director_name_ka'],
+            ],
+            'description'        => [
+                'en' => $validation['movie_description_en'],
+                'ka' => $validation['movie_description_ka'],
+            ],
             'genre'        => $validation['genre'],
             'year'         => $validation['year'],
             'budget'       => $validation['budget'],
-            'description'  => $validation['movie_description_en'],
             'thumbnail'    => is_string($validation['movie_picture']) ? $movie->thumbnail : $validation['movie_picture']->store('movie_thumbnails'),
         ]);
 
-        return response()->json(['message' => 'movie updated successfully'], 200);
+        return response()->json($movie);
     }
 
     public function destroy(Movie $movie): JsonResponse

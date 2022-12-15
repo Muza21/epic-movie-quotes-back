@@ -15,8 +15,8 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'username' => ['required', 'min:3', Rule::exists('users', filter_var($this->username, FILTER_VALIDATE_EMAIL) ? 'email' : 'username')],
-            'password' => 'required|min:3',
+            'username' => ['required', Rule::exists('users', filter_var($this->username, FILTER_VALIDATE_EMAIL) ? 'email' : 'username')],
+            'password' => 'required',
             'remember' => 'sometimes|nullable',
         ];
     }

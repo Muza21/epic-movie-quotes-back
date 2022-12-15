@@ -14,7 +14,7 @@ class MovielistSearchRequest extends FormRequest
     public function rules()
     {
         return [
-            'text' => 'required',
+            'text' => 'sometimes|nullable',
         ];
     }
 }

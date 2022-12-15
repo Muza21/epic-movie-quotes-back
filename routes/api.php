@@ -7,6 +7,7 @@ use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\MoviesController;
 use App\Http\Controllers\QuotesController;
 use App\Http\Controllers\ReactionController;
+use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\VerifyEmailController;
 use Illuminate\Support\Facades\Route;

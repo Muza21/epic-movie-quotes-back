@@ -11,6 +11,7 @@ class GenreController extends Controller
     {
         $data = [
             'genres' => Genre::all(),
+            'user' => jwtUser(),
         ];
 
         return response()->json($data);
