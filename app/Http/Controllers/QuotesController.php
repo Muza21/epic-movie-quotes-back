@@ -14,8 +14,7 @@ class QuotesController extends Controller
 {
     public function index()
     {
-        $data = ['quotes'=>Quote::all()->load('user', 'comments.user', 'likes')];
-
+        $data = ['quotes' => Quote::with('user', 'comments.user', 'likes')->orderBy('created_at', 'desc')->get()];
         return response()->json($data);
     }
 
@@ -40,16 +39,19 @@ class QuotesController extends Controller
     public function store(QuoteStoreRequest $request): JsonResponse
     {
         $validation = $request->validated();
-        $movie = Movie::where('title', '=', $validation['movie_title'])->first();
-        Quote::create([
-            'quote'       => $validation['quote_en'],
-            'movie_id'    => $movie->id,
+        $movie = Movie::where('id', '=', $validation['movie_id'])->first();
+        $quote = Quote::create([
+            'quote'        => [
+                'en' => $validation['quote_en'],
+                'ka' => $validation['quote_ka'],
+            ],
+            'movie_id'    => $validation['movie_id'],
             'thumbnail'   => $validation['quote_picture']->store('quote_thumbnails'),
             'user_id'     => $validation['user_id']
         ]);
         $movie->quotes_number = $movie->quotes_number + 1;
         $movie->save();
-        return response()->json(['message' => 'quote stored successfully'], 200);
+        return response()->json($quote->load('comments.user', 'likes', 'user'));
     }
 
     public function update(QuoteUpdateRequest $request, Quote $quote): JsonResponse
@@ -59,25 +61,29 @@ class QuotesController extends Controller
         if (!is_string($validation['quote_picture'])) {
             File::delete('storage/'.($quote->thumbnail));
         }
-        $movie = Movie::where('title', '=', $validation['movie_title'])->first();
+        $movie = Movie::where('id', '=', $validation['movie_id'])->first();
         $quote->update([
-            'quote'       => $validation['quote_en'],
-            'movie_id'    => $movie->id,
+            'quote'        => [
+                'en' => $validation['quote_en'],
+                'ka' => $validation['quote_ka'],
+            ],
+            'movie_id'     => $validation['movie_id'],
             'thumbnail'    => is_string($validation['quote_picture']) ? $quote->thumbnail : $validation['quote_picture']->store('quote_thumbnails'),
-            'user_id'     => $validation['user_id']
+            'user_id'      => $validation['user_id']
         ]);
 
-        return response()->json(['message' => 'quote updated successfully'], 200);
+        return response()->json($quote);
     }
 
     public function destroy(Quote $quote): JsonResponse
     {
         File::delete('storage/' . $quote->thumbnail);
+        $deletedQuote = $quote;
         $quote->delete();
         $movie = Movie::where('id', '=', $quote->movie_id)->first();
         $movie->quotes_number = $movie->quotes_number - 1;
         $movie->save();
 
-        return response()->json(['message' => 'quote deleted successfully'], 200);
+        return response()->json($deletedQuote);
     }
 }

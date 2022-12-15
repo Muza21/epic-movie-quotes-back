@@ -103,5 +103,5 @@ Now if you finished setting up both, front and backend, you can log in and add n
 
 ## Resources
 
--   [drawSQL Diagram]()
+-   [drawSQL Diagram](https://drawsql.app/teams/redberry-28/diagrams/epic-movie-quotes)
 -   [design](https://www.figma.com/file/5uMXCg3itJwpzh9cVIK3hA/Movie-Quotes-Bootcamp-assignment?node-id=335%3A24052&t=0tXCamJUwZXQIabA-0)

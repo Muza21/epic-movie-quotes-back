@@ -5,8 +5,10 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\MoviesController;
+use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\QuotesController;
 use App\Http\Controllers\ReactionController;
+use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
@@ -63,3 +65,5 @@ Route::post('/comment/{quote}', [CommentController::class, 'post'])->middleware(
 Route::post('/reaction/{quote}', [ReactionController::class, 'like'])->middleware('jwt.auth')->name('like.quote');
 Route::post('/search', [SearchController::class, 'searchMovieList'])->middleware('jwt.auth')->name('search.movielist');
 Route::post('/search-newsfeed', [SearchController::class, 'searchNewsfeed'])->middleware('jwt.auth')->name('search.newsfeed');
+Route::get('/notification', [NotificationsController::class, 'index'])->middleware('jwt.auth')->name('notifications.list');
+Route::post('/notification', [NotificationsController::class, 'update'])->middleware('jwt.auth')->name('update.notifications');

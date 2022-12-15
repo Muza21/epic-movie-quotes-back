@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\UserNotification;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,6 +19,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/test', function () {
-    return view('test');
-});
+// Route::get('/test', function () {
+//     broadcast(new UserNotification());
+// });
